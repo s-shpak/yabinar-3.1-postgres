@@ -57,6 +57,12 @@ make build-app
 
 Лучший источник информации об индексах: https://postgrespro.ru/docs/postgrespro/16/indexes
 
+Подключимся к БД:
+
+```bash
+psql -h localhost -p 5432 -U gopher -d gopher_corp
+```
+
 Посмотрим на стоимость запроса поиска по фамилии без использования индексов:
 
 ```sql

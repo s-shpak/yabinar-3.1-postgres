@@ -10,7 +10,7 @@ pg:
 		-e POSTGRES_PASSWORD="P@ssw0rd" \
 		-d \
 		-p 5432:5432 \
-		postgres:16.1
+		postgres:16.3
 
 .PHONY: stop-pg
 stop-pg:

@@ -102,7 +102,7 @@ func generateData(ctx context.Context, db *sql.DB, empsCount int) error {
 			return fmt.Errorf("failed to fetch positions IDs: %w", err)
 		}
 	}
-	log.Println(positionsIDs)
+
 	if err := generateEmployeesData(ctx, db, generateEmployeesDataOpts{
 		Count:        empsCount,
 		PositionsIDs: positionsIDs,

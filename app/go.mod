@@ -1,6 +1,6 @@
 module app
 
-go 1.21.1
+go 1.22.3
 
 require (
 	github.com/brianvoe/gofakeit/v6 v6.25.0

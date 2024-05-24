@@ -1,1 +1,3 @@
 bin/
+
+golangci-lint/
