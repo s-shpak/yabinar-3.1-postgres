@@ -37,6 +37,7 @@ func run() error {
 	app := application.NewApplication(s)
 	srv := api.InitServer(api.Config{Host: cfg.Host}, app)
 
+	log.Println("Starting to accept requests")
 	if err := srv.ListenAndServe(); err != nil {
 		if !errors.Is(err, http.ErrServerClosed) {
 			return fmt.Errorf("listen and serve has exited with an error: %w", err)

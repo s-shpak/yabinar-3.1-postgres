@@ -1,0 +1,47 @@
+services:
+  yabinar-3-postgres:
+    container_name: yabinar-3-postgres
+    image: postgres:17.2
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U gopher -d gopher_corp" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: "P@ssw0rd"
+      PGDATA: "/var/lib/postgresql/data"
+    volumes:
+      - "./db/init:/docker-entrypoint-initdb.d"
+      - "yabinar-3-postgres:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    networks:
+      - yabinar-3
+    restart: always
+
+  yabinar-3-employees:
+    container_name: yabinar-3-employees
+    build:
+      context: .
+      dockerfile: build/Dockerfile.employees
+    depends_on:
+      yabinar-3-postgres:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      EMPLOYEES_DSN: "postgresql://gopher:gopher@yabinar-3-postgres:5432/gopher_corp"
+      EMPLOYEES_HOST: "0.0.0.0:8080"
+    networks:
+      - yabinar-3
+    restart: always
+
+volumes:
+  yabinar-3-postgres:
+
+networks:
+  yabinar-3:
+    driver: bridge

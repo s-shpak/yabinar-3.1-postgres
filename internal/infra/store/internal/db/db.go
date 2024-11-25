@@ -3,6 +3,8 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
@@ -50,9 +52,16 @@ func (db *DB) GetEmployeesByName(
 ) ([]model.Employee, error) {
 	const queryStmt = `SELECT id, first_name, last_name, salary, position, email
 FROM employees
-WHERE last_name LIKE CONCAT('%%', $1::text, '%%') AND id > $2
+WHERE lower(last_name) LIKE $1 || '%' AND id > $2
 LIMIT $3`
-	rows, err := db.pool.Query(ctx, queryStmt, fmt.Sprintf("%%%s%%", name), offsetOpts.LastID, offsetOpts.Limit)
+
+	start := time.Now()
+	defer func() {
+		elapsed := time.Since(start)
+		log.Printf("request ot DB took %s", elapsed)
+	}()
+
+	rows, err := db.pool.Query(ctx, queryStmt, name, offsetOpts.LastID, offsetOpts.Limit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to query DB: %w", err)
 	}
