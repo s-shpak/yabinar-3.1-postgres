@@ -31,7 +31,7 @@ docker compose down --volumes
 ```bash
 make build-datagen
 
-./bin/datagen -dsn postgresql://gopher:gopher@localhost:5432/gopher_corp -emp-count 10000000
+./bin/datagen -dsn postgresql://gopher:gopher@localhost:5432/gopher_corp -emp-count 5000000
 ```
 
 На что стоит обратить внимание:
@@ -45,17 +45,9 @@ make build-datagen
 
 Код приложения, работающего с БД, лежит в `app/cmd/employees`.
 
-Для запуска сервера выполните следующую комманду:
-
-```bash
-make build-app
-
-./app/bin/employees -dsn postgresql://gopher:gopher@localhost:5432/gopher_corp
-```
-
 Для получения результатов перейдите в бразуере, например, по ссылке:
 
-`http://localhost:8080/employees/ann?limit=50&last-id=1024`
+`http://localhost:8080/employees/how?limit=50&last-id=1024`
 
 На что стоит обратить внимание:
 - PGX pool и его конфигурация
@@ -79,7 +71,7 @@ EXPLAIN (ANALYZE, VERBOSE)
 SELECT id, first_name, last_name, salary, position, email
 FROM employees
 WHERE
-    id > 542 AND lower(last_name) LIKE 'ann%'
+    id > 542 AND lower(last_name) LIKE 'how%'
 ORDER BY ID asc
 ;
 ```
@@ -100,7 +92,7 @@ EXPLAIN (ANALYZE, VERBOSE)
 SELECT id, first_name, last_name, salary, position, email
 FROM employees
 WHERE
-    id > 542 AND lower(last_name) LIKE 'ann%'
+    id > 542 AND lower(last_name) LIKE 's%'
 ORDER BY ID asc
 ;
 ```
